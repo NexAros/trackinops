@@ -43,13 +43,18 @@ if (middleware) {
 * @param {Function} next
 **/
 router.post('/:crawler_id/start', function (req, res) {
-
+  crawlersModel.findById(req.params.crawler_id, function (err, crawler) {
+    if (err) return res.status(404);
+    res.status(202).render('layout', {
+      title: 'Crawler id = ' + crawler._id,
+      message: 'Crawler (id= ' + crawler._id + ') has started at ' + _.now()
+    });
+  });
   // TODO: Identify crawler_id from MongoDB
   // TODO: Start Process Links with crawler data from MongoDB
   // TODO: if crawler_id does not match = res.404
   // TODO: if crawler starts = res:ok
   // TODO: if craweler fails to start res.error
-
 });
 
 /**
