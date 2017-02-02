@@ -1,13 +1,22 @@
-let express = require('express');
-let path = require('path');
+const express = require('express');
+const path = require('path');
 // var favicon = require('serve-favicon');
-let logger = require('morgan');
+const logger = require('morgan');
 // var cookieParser = require('cookie-parser');
-let bodyParser = require('body-parser');
-let kue = require('kue');
-let ui = require('kue-ui');
+const bodyParser = require('body-parser');
+const kue = require('kue');
+const ui = require('kue-ui');
 
-const routes = require('./routes/index');
+// start MongoDB with Mongoose
+const mongoose = require('mongoose');
+
+const uri = 'mongodb://localhost/trackinops';
+// Use bluebird
+mongoose.Promise = require('bluebird'); // for Mongoose
+let options = { promiseLibrary: require('bluebird') }; // for MongoDB driver
+global.db = mongoose.createConnection(uri, options);
+
+const routes = require('./routes');
 
 const app = express();
 
@@ -45,7 +54,7 @@ app.use('/restricted/kue-ui', ui.app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  let err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

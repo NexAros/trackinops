@@ -21,7 +21,7 @@ gulp.task('server', function () {
  * description: start the development environment
  */
 gulp.task('default', ['server'], function () {
-  gulp.watch(['./app.js', './views/*.jade', './routes/*.js'], ['server']);
+  gulp.watch(['./app.js', './views/*.jade', './routes/*.js', './models/*.js'], ['server']);
 
   // Need to watch for sass changes too? Just add another watch call!
   // no more messing around with grunt-concurrent or the like. Gulp is
