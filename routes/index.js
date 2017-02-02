@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const crawlersModel = require('../models/crawlers');
+let express = require('express');
+let router = express.Router();
+let crawlersModel = require('../models/crawlers');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {

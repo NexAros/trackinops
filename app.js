@@ -1,16 +1,16 @@
-const express = require('express');
-const path = require('path');
-// var favicon = require('serve-favicon');
+let express = require('express');
+let path = require('path');
+let favicon = require('serve-favicon');
 const logger = require('morgan');
 // var cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const kue = require('kue');
-const ui = require('kue-ui');
+let bodyParser = require('body-parser');
+let kue = require('kue');
+let ui = require('kue-ui');
 
 // start MongoDB with Mongoose
 const mongoose = require('mongoose');
 
-const uri = 'mongodb://localhost/trackinops';
+let uri = 'mongodb://localhost/trackinops';
 // Use bluebird
 mongoose.Promise = require('bluebird'); // for Mongoose
 let options = { promiseLibrary: require('bluebird') }; // for MongoDB driver
@@ -27,7 +27,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

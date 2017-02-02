@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es6", //The key, of course.
+    "module": "commonjs",
+    "sourceMap": true,
+    "allowJs": true
+  },
+  "exclude": [
+    "node_modules",
+    ".vscode"
+  ]
+}
