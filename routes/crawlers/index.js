@@ -1,14 +1,11 @@
-/**
- *  competitor Routes
- *
- **/
-const _ = require('lodash');
-const express = require('express');
-const router = express.Router({
+// let _ = require('lodash');
+let express = require('express');
+let router = express.Router({
   mergeParams: true
 });
 let middleware;
-const crawlersModel = require('../../models/crawlers');
+let Runner = require('../../lib/runner');
+/**
 /**
  *  competitors
  *
@@ -43,14 +40,33 @@ if (middleware) {
 * @param {Function} next
 **/
 router.post('/:crawler_id/start', function (req, res) {
-  crawlersModel.findById(req.params.crawler_id, function (err, crawler) {
-    if (err) return res.status(404);
-    res.status(202).render('layout', {
-      title: 'Crawler id = ' + crawler._id,
-      message: 'Crawler (id= ' + crawler._id + ') has started at ' + _.now()
+  // TODO: Check if crawler (aka Job) is valid on Runner controller
+  // TODO: If crawler is valid, initCrawler on Runner
+  // TODO: After Crawler initiation, create Execution details object (aka process or worker)  
+  let run = new Runner();
+  // console.log(run.initCrawler(req.params.crawler_id));
+  let crawler = run.initCrawler(req.params.crawler_id);
+  console.log(crawler);
+  crawler.get(req.params.crawler_id, function (err, ress) {
+    if (err) return next(err);
+    res.status(200).render('layout', {
+      title: 'Crawler id = ',
+      message: 'Crawler = ' + ress.id
     });
   });
-  // TODO: Identify crawler_id from MongoDB
+
+  // crawler.getCrawler(req.params.crawler_id, function (err, data) {
+  //   //crawlersModel.findById(req.params.crawler_id, function (err, crawler_settings) {
+  //   if (err) return res.status(404);
+
+  //   //let crawler = runner.createRunner(crawler_settings);
+  //   // TODO: start crawler URL processing and return Execution details
+  //   res.status(204).render('layout', {
+  //     title: 'Crawler id = ' + data._id,
+  //     message: 'Crawler (id= ' + data._id + ') has started at ' + data // .moment().format()
+  //   });
+  // });
+
   // TODO: Start Process Links with crawler data from MongoDB
   // TODO: if crawler_id does not match = res.404
   // TODO: if crawler starts = res:ok

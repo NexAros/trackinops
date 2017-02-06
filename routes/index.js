@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-let crawlersModel = require('../models/crawlers');
+let crawlersModel = require('../lib/models/crawlerModel');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
