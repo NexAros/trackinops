@@ -6,7 +6,7 @@ let kue = require('kue'),
 let jobs = kue.createQueue();
 
 function create() {
-    const name = ['tobi', 'loki', 'jane', 'manny'][Math.random() * 4 | 0];
+    let name = ['tobi', 'loki', 'jane', 'manny'][Math.random() * 4 | 0];
     jobs.create('video conversion', {
         title: 'converting ' + name + "'s to avi",
         user: 1,
@@ -18,7 +18,7 @@ function create() {
 create();
 
 function create2() {
-    const name = ['tobi', 'loki', 'jane', 'manny'][Math.random() * 4 | 0];
+    let name = ['tobi', 'loki', 'jane', 'manny'][Math.random() * 4 | 0];
     jobs.create('email', {
         title: 'emailing ' + name + '',
         body: 'hello'

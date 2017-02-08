@@ -1,10 +1,12 @@
 // let _ = require('lodash');
-let express = require('express');
-let router = express.Router({
+const express = require('express');
+const router = express.Router({
   mergeParams: true
 });
 let middleware;
-let Runner = require('../../lib/runner');
+const runner = require('../../lib/runner');
+const Runner = runner.createRunner();
+const Crawler = require('../../lib/crawler');
 /**
 /**
  *  competitors
@@ -30,28 +32,45 @@ router.param('crawler_id', function (req, res, next, name) {
 if (middleware) {
   router.use(middleware);
 }
+// get crawler by crawler_id
+router.get('/:crawler_id', function (req, res, next) {
+  // const Crawler = Runner.initCrawler(req.params.crawler_id);
+  const Crawl = new Crawler(req.params.crawler_id).get(req.params.crawler_id, function (err, crawler) {
+    if (err) return next(err);
+    if (!crawler) return res.status(410);
+    return res.status(200).render('layout', {
+      title: 'Crawler id = ' + crawler._id,
+      message: JSON.stringify(crawler) + ' ' + crawler.startingLinks[0].value
+    });
+  });
+});
+// creates new crawler
+router.post('/', function (req, res, next) {
+  // TODO: req.body.crawlerCustomId == required
+  // const crawler = Runner.initCrawler(req.body).save(function (err) {
+  const crawler = new Crawler(req.body).save(function (err) {
+    if (err) return next(err);
+    // console.log('c', crawler);
+    return res.status(201).json(crawler._id);
+  });
+});
 
-/**
-* Start action, starts a single site srawler
-* Default mapping to POST '~/crawlers/:crawler_id/start', no GET mapping
-*
-* @param {Object} req
-* @param {Object} res
-* @param {Function} next
-**/
+// starts crawler execution
 router.post('/:crawler_id/start', function (req, res) {
   // TODO: Check if crawler (aka Job) is valid on Runner controller
   // TODO: If crawler is valid, initCrawler on Runner
-  // TODO: After Crawler initiation, create Execution details object (aka process or worker)  
-  let run = new Runner();
-  // console.log(run.initCrawler(req.params.crawler_id));
-  let crawler = run.initCrawler(req.params.crawler_id);
-  console.log(crawler);
-  crawler.get(req.params.crawler_id, function (err, ress) {
+  // TODO: After Crawler initiation, create Execution details object (aka process or worker)
+  new Crawler().get(req.params.crawler_id, function (err, crawlerObj) {
     if (err) return next(err);
-    res.status(200).render('layout', {
-      title: 'Crawler id = ',
-      message: 'Crawler = ' + ress.id
+    // console.log(Runner);
+
+    new Crawler().startPreProcessing(crawlerObj, function (er) {
+      if (er) return next(er);
+
+      res.status(200).render('layout', {
+        title: 'Crawler id = ',
+        message: 'Crawler = ' + crawlerObj._id + ' has started'
+      });
     });
   });
 
@@ -71,21 +90,6 @@ router.post('/:crawler_id/start', function (req, res) {
   // TODO: if crawler_id does not match = res.404
   // TODO: if crawler starts = res:ok
   // TODO: if craweler fails to start res.error
-});
-
-/**
-* Get single crawler by _id
-* Default mapping to GET '~/crawlers/:crawler_id'
-*
-* @param {Object} req
-* @param {Object} res
-* @param {Function} next
-**/
-router.get('/:crawler_id', function (req, res, next) {
-  crawlersModel.findById(req.params.crawler_id, function (err, crawler) {
-    if (err) return next(err);
-    res.status(200).render('layout', { title: 'Crawler id = ' + crawler._id, message: crawler._id });
-  });
 });
 
 module.exports = router;

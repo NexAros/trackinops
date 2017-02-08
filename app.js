@@ -1,11 +1,11 @@
-let express = require('express');
-let path = require('path');
-let favicon = require('serve-favicon');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
 const logger = require('morgan');
-// var cookieParser = require('cookie-parser');
-let bodyParser = require('body-parser');
-let kue = require('kue');
-let ui = require('kue-ui');
+// const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const kue = require('kue');
+const ui = require('kue-ui');
 
 // start MongoDB with Mongoose
 const mongoose = require('mongoose');
