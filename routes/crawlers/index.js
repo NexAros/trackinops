@@ -57,17 +57,15 @@ router.post('/', function (req, res, next) {
 
 // starts crawler execution
 router.post('/:crawler_id/start', function (req, res) {
-  // TODO: Check if crawler (aka Job) is valid on Runner controller
-  // TODO: If crawler is valid, initCrawler on Runner
-  // TODO: After Crawler initiation, create Execution details object (aka process or worker)
+  // Check if Crawler is valid
   new Crawler().get(req.params.crawler_id, function (err, crawlerObj) {
     if (err) return next(err);
-    // console.log(Runner);
 
-    new Crawler().startPreProcessing(crawlerObj, function (er) {
+    // If crawler is valid startPreProcessing
+    return new Crawler().startPreProcessing(crawlerObj, function (er) {
       if (er) return next(er);
 
-      res.status(200).render('layout', {
+      return res.status(200).render('layout', {
         title: 'Crawler id = ',
         message: 'Crawler = ' + crawlerObj._id + ' has started'
       });
