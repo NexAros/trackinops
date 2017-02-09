@@ -44,7 +44,8 @@ router.get('/:crawler_id', function (req, res, next) {
     });
   });
 });
-// creates new crawler
+// creates new crawler or updates the old one
+// TODO: save function was re-written, test out if body have and heve no ID
 router.post('/', function (req, res, next) {
   // TODO: req.body.crawlerCustomId == required
   // const crawler = Runner.initCrawler(req.body).save(function (err) {
@@ -56,14 +57,14 @@ router.post('/', function (req, res, next) {
 });
 
 // starts crawler execution
-router.post('/:crawler_id/start', function (req, res) {
+router.post('/:crawler_id/start', function (req, res, next) {
   // Check if Crawler is valid
   new Crawler().get(req.params.crawler_id, function (err, crawlerObj) {
     if (err) return next(err);
 
     // If crawler is valid startPreProcessing
-    return new Crawler().startPreProcessing(crawlerObj, function (er) {
-      if (er) return next(er);
+    return new Crawler().startPreProcessing(crawlerObj, function (err) {
+      if (err) return next(err);
 
       return res.status(200).render('layout', {
         title: 'Crawler id = ',
