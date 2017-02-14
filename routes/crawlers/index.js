@@ -63,12 +63,12 @@ router.post('/:crawler_id/start', function (req, res, next) {
     if (err) return next(err);
 
     // If crawler is valid startPreProcessing
-    return new Crawler().startPreProcessing(crawlerObj, function (err) {
+    return new Crawler().startPreProcessing(crawlerObj, function (err, executionDoc) {
       if (err) return next(err);
 
       return res.status(200).render('layout', {
         title: 'Crawler id = ',
-        message: 'Crawler = ' + crawlerObj._id + ' has started'
+        message: 'Crawler = ' + executionDoc._id + ' has started'
       });
     });
   });
