@@ -60,6 +60,8 @@ router.post('/', function (req, res, next) {
 router.post('/:crawler_id/start', function (req, res, next) {
   // Check if Crawler is valid
   new Crawler().get(req.params.crawler_id, function (err, crawlerObj) {
+    console.log('err', err);
+    console.log('crawlerObj', crawlerObj);
     if (err) return next(err);
 
     // If crawler is valid startPreProcessing
