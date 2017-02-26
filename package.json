@@ -1,15 +1,14 @@
 {
-  "name": "trackinopskue",
+  "name": "trackinops",
   "version": "0.1.0",
   "private": true,
   "description": "Jobs queue for trackinOps parsing application.",
-  "main": "index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/www"
   },
   "author": "Darvydas Šilkus <darvydas@silkus.eu>",
-  "license": "ISC",
+  "license": "GPL",
   "dependencies": {
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
