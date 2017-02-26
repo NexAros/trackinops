@@ -4,20 +4,7 @@ const router = express.Router({
   mergeParams: true
 });
 let middleware;
-const runner = require('../../lib/runner');
-const Runner = runner.createRunner();
 const Crawler = require('../../lib/crawler');
-/**
-/**
- *  competitors
- *
- **/
-// let jsm = require('../competitor/jsm/jsm.lt.js');
-// let jsmUzpildymas = require('../competitor/jsm/jsmuzpildymas.lt.js');
-// let jsmPrekes = require('../competitor/jsm/jsmprekes.lt.js');
-// let conrad = require('../competitor/conrad.com.js');
-// let prekes = require('../competitor/prekes.lt.js');
-// let uzpildymas = require('../competitor/uzpildymas.lt.js');
 
 /* params router level */
 router.param('crawler_id', function (req, res, next, name) {
@@ -34,7 +21,6 @@ if (middleware) {
 }
 // get crawler by crawler_id
 router.get('/:crawler_id', function (req, res, next) {
-  // const Crawler = Runner.initCrawler(req.params.crawler_id);
   const Crawl = new Crawler(req.params.crawler_id).get(req.params.crawler_id, function (err, crawler) {
     if (err) return next(err);
     if (!crawler) return res.status(410);
@@ -48,7 +34,6 @@ router.get('/:crawler_id', function (req, res, next) {
 // TODO: save function was re-written, test out if body have and heve no ID
 router.post('/', function (req, res, next) {
   // TODO: req.body.crawlerCustomId == required
-  // const crawler = Runner.initCrawler(req.body).save(function (err) {
   const crawler = new Crawler(req.body).save(function (err) {
     if (err) return next(err);
     // console.log('c', crawler);
@@ -72,18 +57,6 @@ router.post('/:crawler_id/start', function (req, res, next) {
       });
     });
   });
-
-  // crawler.getCrawler(req.params.crawler_id, function (err, data) {
-  //   //crawlersModel.findById(req.params.crawler_id, function (err, crawler_settings) {
-  //   if (err) return res.status(404);
-
-  //   //let crawler = runner.createRunner(crawler_settings);
-  //   // TODO: start crawler URL processing and return Execution details
-  //   res.status(204).render('layout', {
-  //     title: 'Crawler id = ' + data._id,
-  //     message: 'Crawler (id= ' + data._id + ') has started at ' + data // .moment().format()
-  //   });
-  // });
 
   // TODO: Start Process Links with crawler data from MongoDB
   // TODO: if crawler_id does not match = res.404
